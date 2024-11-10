@@ -7,7 +7,7 @@ namespace Lab
     {
         public static string[] Read(string name)
         {
-            string[] res = File.ReadAllLines(name);
+            string[] res = File.ReadAllLines(@$"data\{name}");
             return res;
         }
 
@@ -20,24 +20,25 @@ namespace Lab
             return a * b;
         }
 
-        public static void NoFileWrite(StringBuilder sb)
+        public static void NoFileWrite(StringBuilder sb,string file)
         {
             try
             {
-                using (TextWriter sw = new StreamWriter("no_file.txt"))
+                using (TextWriter sw = new StreamWriter(file))
                 {
                     sw.WriteLine(sb);
                 }
             }
             catch
             {
-                File.Create("no_file.txt").Close();
-                using (TextWriter sw = new StreamWriter("no_file.txt"))
+                File.Create(file).Close();
+                using (TextWriter sw = new StreamWriter(file))
                 {
                     sw.WriteLine(sb);
                 }
             }
         }
+
     }
     class Program
     {
@@ -57,7 +58,7 @@ namespace Lab
                         int b = Action.TryParse(inp[1]);
                         try
                         {
-                            int mul = Action.Multiply(a, b);
+                            Console.WriteLine(Action.Multiply(a, b));
                         }
                         catch (OverflowException ex)
                         {
@@ -77,7 +78,16 @@ namespace Lab
                     Console.WriteLine(ex.Message);
                 }
             }
-            Action.NoFileWrite(noFile);
+            try
+            {
+                Action.NoFileWrite(noFile, @"exceptionData\no_file.txt");
+                Action.NoFileWrite(badData, @"exceptionData\bad_data.txt");
+                Action.NoFileWrite(overflow, @"exceptionData\overflow.txt");
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 }
