@@ -39,8 +39,27 @@ namespace Lab
     {
         static void Main(string[] args)
         {
-            Action.NoFileWrite("10.txt");
-            Action.NoFileWrite("11.txt");
+            StringBuilder noFile = new StringBuilder();
+            for(int i = 10; i < 30; i++)
+            {
+                try
+                {
+                    string[] inp = Action.Read($"{i}.txt");
+                    try
+                    {
+                        int mul = Action.Multiply(int.Parse(inp[0]), int.Parse(inp[1]));
+                    }
+                    catch(Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+                }
+                catch(Exception ex)
+                {
+                    noFile.Append(i + ".txt\n");
+                    Console.WriteLine(ex.Message);
+                }
+            }
         }
     }
 }
