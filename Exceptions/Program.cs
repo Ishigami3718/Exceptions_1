@@ -3,18 +3,19 @@ namespace Lab
 {
     class MyExceptions
     {
-        private Exception ex1 = new Exception("Such file doesnt exist");
-        private Exception ex2 = new OverflowException();
-        private Exception ex3 = new Exception("digits arent int");
-        public void TryRead(string name)
+       static private Exception ex1 = new Exception("Such file doesnt exist");
+       static private Exception ex2 = new OverflowException();
+       static private Exception ex3 = new Exception("digits arent int");
+       static public void TryRead(string name)
         {
             try
             {
                 IDK.Read(name);
             }
-            catch (Exception ex)
+            catch
             {
-                Console.WriteLine(ex.Message);
+                IDK.WriteNonExistentFiles(name);
+                Console.WriteLine(ex1.Message);
             }
         }
     }
@@ -26,13 +27,19 @@ namespace Lab
             StreamReader sr = new StreamReader(name);
         }
 
-
+        static public void WriteNonExistentFiles(string name)
+        {
+            File.Create("no_file.txt").Close();
+            StreamWriter sw = new StreamWriter("no_file.txt");
+            sw.WriteLine(name);
+            sw.Close();
+        }
     }
     class Program
     {
         static void Main(string[] args)
         {
-
+            MyExceptions.TryRead("10.txt");
         }
     }
 }
