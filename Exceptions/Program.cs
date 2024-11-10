@@ -29,17 +29,19 @@ namespace Lab
 
         static public void WriteNonExistentFiles(string name)
         {
-            File.Create("no_file.txt").Close();
-            StreamWriter sw = new StreamWriter("no_file.txt");
-            sw.WriteLine(name);
-            sw.Close();
+            StreamWriter sw1 = new StreamWriter("no_file.txt");
+            sw1.WriteLine(name);
+            sw1.Close();
         }
     }
     class Program
     {
         static void Main(string[] args)
         {
+            File.Create("no_file.txt").Close();
             MyExceptions.TryRead("10.txt");
+            MyExceptions.TryRead("11.txt");
+            MyExceptions.TryRead("11.txt");
         }
     }
 }
