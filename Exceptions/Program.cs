@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
+using System.Threading.Channels;
 
 namespace Lab
 {
@@ -15,10 +17,10 @@ namespace Lab
         {
             return int.Parse(inp);
         }
-        public static int Multiply(int a,int b)
+        /*public static int TryMultiply(int a,int b)
         {
             return a * b;
-        }
+        }*/
 
         public static void NoFileWrite(StringBuilder sb,string file)
         {
@@ -47,6 +49,8 @@ namespace Lab
             StringBuilder noFile = new StringBuilder();
             StringBuilder badData = new StringBuilder();
             StringBuilder overflow = new StringBuilder();
+            int res = 0;
+            int count = 0;
             for(int i = 10; i < 30; i++)
             {
                 try
@@ -58,24 +62,31 @@ namespace Lab
                         int b = Action.TryParse(inp[1]);
                         try
                         {
-                            Console.WriteLine(Action.Multiply(a, b));
+                            checked 
+                            {
+                                res+=a*b;
+                            }
+                            count++;
                         }
-                        catch (OverflowException ex)
+                        catch(OverflowException ox)
                         {
+                            Console.Write($"File {i}: ");
                             overflow.Append(i + ".txt\n");
-                            Console.WriteLine(ex.Message);
+                            Console.WriteLine(ox.Message);
                         }
                     }
-                    catch(Exception ex)
+                    catch
                     {
+                        Console.Write($"File {i}: ");
                         badData.Append(i + ".txt\n");
-                        Console.WriteLine(ex.Message);
+                        Console.WriteLine(new Exception($"Data in file {i}.txt isnt normal").Message);
                     }
                 }
-                catch(Exception ex)
+                catch
                 {
+                    Console.Write($"File {i}: ");
                     noFile.Append(i + ".txt\n");
-                    Console.WriteLine(ex.Message);
+                    Console.WriteLine(new Exception($"File {i}.txt doesnt excist").Message);
                 }
             }
             try
@@ -88,6 +99,7 @@ namespace Lab
             {
                 Console.WriteLine(ex.Message);
             }
+            Console.WriteLine((double)res/count);
         }
     }
 }
