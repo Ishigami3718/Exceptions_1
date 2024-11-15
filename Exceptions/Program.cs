@@ -36,38 +36,35 @@ namespace Lab
             {
                 try
                 {
-                    string[] inp = File.ReadAllLines($"{i}.txt");
-                    try
-                    {
+                    string[] inp = File.ReadAllLines(@$"data\{i}.txt");
                         int a = int.Parse(inp[0]);
                         int b = int.Parse(inp[1]);
-                        try
-                        {
                             checked 
                             {
                                 res+=a*b;
                             }
                             count++;
-                        }
-                        catch(OverflowException ox)
-                        {
-                            Console.Write($"File {i}: ");
-                            overflow.Append(i + ".txt\n");
-                            Console.WriteLine(ox.Message);
-                        }
-                    }
-                    catch
-                    {
-                        Console.Write($"File {i}: ");
-                        badData.Append(i + ".txt\n");
-                        Console.WriteLine(new Exception($"Data in file {i}.txt isnt normal").Message);
-                    }
                 }
-                catch
+                catch(FileNotFoundException)
                 {
-                    Console.Write($"File {i}: ");
                     noFile.Append(i + ".txt\n");
                     Console.WriteLine(new Exception($"File {i}.txt doesnt excist").Message);
+                }
+                catch(FormatException)
+                {
+                    badData.Append(i + ".txt\n");
+                    Console.WriteLine(new Exception($"Data in file {i}.txt isnt normal").Message);
+                }
+                catch (IndexOutOfRangeException)
+                {
+                    badData.Append(i + ".txt\n");
+                    Console.WriteLine(new Exception($"Data in file {i}.txt isnt normal").Message);
+                }
+                catch (OverflowException)
+                {
+                    Console.Write($"File {i}: ");
+                    overflow.Append(i + ".txt\n");
+                    Console.WriteLine(new Exception("int type overflow(after multiply)").Message);
                 }
             }
             try
