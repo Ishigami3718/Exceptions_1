@@ -5,24 +5,9 @@ using System.Threading.Channels;
 
 namespace Lab
 {
-    class Action
+    class Program
     {
-        public static string[] Read(string name)
-        {
-            string[] res = File.ReadAllLines(@$"data\{name}");
-            return res;
-        }
-
-        public static int TryParse(string inp)
-        {
-            return int.Parse(inp);
-        }
-        /*public static int TryMultiply(int a,int b)
-        {
-            return a * b;
-        }*/
-
-        public static void NoFileWrite(StringBuilder sb,string file)
+        public static void NoFileWrite(StringBuilder sb, string file)
         {
             try
             {
@@ -40,10 +25,6 @@ namespace Lab
                 }
             }
         }
-
-    }
-    class Program
-    {
         static void Main(string[] args)
         {
             StringBuilder noFile = new StringBuilder();
@@ -55,11 +36,11 @@ namespace Lab
             {
                 try
                 {
-                    string[] inp = Action.Read($"{i}.txt");
+                    string[] inp = File.ReadAllLines($"{i}.txt");
                     try
                     {
-                        int a = Action.TryParse(inp[0]);
-                        int b = Action.TryParse(inp[1]);
+                        int a = int.Parse(inp[0]);
+                        int b = int.Parse(inp[1]);
                         try
                         {
                             checked 
@@ -91,9 +72,9 @@ namespace Lab
             }
             try
             {
-                Action.NoFileWrite(noFile, @"exceptionData\no_file.txt");
-                Action.NoFileWrite(badData, @"exceptionData\bad_data.txt");
-                Action.NoFileWrite(overflow, @"exceptionData\overflow.txt");
+                NoFileWrite(noFile, @"exceptionData\no_file.txt");
+                NoFileWrite(badData, @"exceptionData\bad_data.txt");
+                NoFileWrite(overflow, @"exceptionData\overflow.txt");
             }
             catch(Exception ex)
             {
